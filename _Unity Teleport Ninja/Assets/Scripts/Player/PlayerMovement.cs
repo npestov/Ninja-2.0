@@ -104,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator SwitchToFall()
     {
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.2f);
         if (!fallingActivated && GameManager.Instance.State != GameState.Killing && isFalling)
         {
             fallingActivated = true;

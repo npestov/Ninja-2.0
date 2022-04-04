@@ -8,6 +8,7 @@ using Facebook.Unity;
 using Unity.Advertisement.IosSupport;
 #endif
 
+
 public class InitSupersonic : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -25,9 +26,9 @@ public class InitSupersonic : MonoBehaviour
         }
         GameAnalytics.Initialize();
         GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "World_01", "Stage_01", "Level_Progress");
-        #if UNITY_IOS
+#if UNITY_IOS
         SkAdNetworkBinding.SkAdNetworkRegisterAppForNetworkAttribution();
-        #endif
+#endif
     }
 
     private void InitCallback()
@@ -48,6 +49,9 @@ public class InitSupersonic : MonoBehaviour
         int sceneToLoad = PlayerPrefs.GetInt("lvl", 1) % SceneManager.sceneCountInBuildSettings;
         if (sceneToLoad == 0)
             PlayerPrefs.SetInt("lvl", PlayerPrefs.GetInt("lvl") + 1);
+        if (PlayerPrefs.GetFloat("sharpness") < 1)
+            PlayerPrefs.SetFloat("sharpness", 1);
+
 
         SceneManager.LoadScene(sceneToLoad);
     }

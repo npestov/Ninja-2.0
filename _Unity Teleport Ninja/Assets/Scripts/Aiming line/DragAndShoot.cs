@@ -87,7 +87,7 @@ public class DragAndShoot : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.State == GameState.Walking && Input.GetMouseButtonDown(0))
+        if (GameManager.Instance.State == GameState.Walking && Input.GetMouseButtonDown(0) && !attackMoveController.isThrowing)
         {
             Debug.Log("Lol im in");
             RaycastHit hit;

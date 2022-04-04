@@ -15,6 +15,9 @@ public class HitDetection : MonoBehaviour
 
     public void CheckIfHitEnemy(RaycastHit hit)
     {
+        if (attackMoveController.isThrowing)
+            return;
+
         if (hit.transform.gameObject.GetComponentInChildren<TargetScript>() != null || hit.transform.gameObject.GetComponent<TargetScript>() != null)
         {
             foreach (TargetScript enemy in FindObjectsOfType<TargetScript>())

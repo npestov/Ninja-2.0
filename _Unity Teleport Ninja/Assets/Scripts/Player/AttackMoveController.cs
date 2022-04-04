@@ -6,6 +6,7 @@ using DG.Tweening;
 public class AttackMoveController : MonoBehaviour
 {
     public bool isAttackQueued;
+    public bool isThrowing = false;
 
     public GameObject enemyToKill;
     private PlayerAnim playerAnim;
@@ -80,6 +81,9 @@ public class AttackMoveController : MonoBehaviour
     //WARP START
     public void WarpKill()
     {
+        if (isThrowing)
+            return;
+        isThrowing = true;
         //TEMP FIX
         transform.DOLookAt(enemyToKill.transform.position, 1);
 
@@ -114,7 +118,7 @@ public class AttackMoveController : MonoBehaviour
         warpDuration = Mathf.Sqrt(distanceToEnemy) / 25;
 
         sword.parent = null;
-        sword.DOMove(swordTpPos, warpDuration / 1.5f);
+        sword.DOMove(swordTpPos, warpDuration / 1.2f);
         sword.DOLookAt(swordTpPos, .2f, AxisConstraint.None);
         ManuallySlice(swordTpPos);
 
@@ -134,7 +138,7 @@ public class AttackMoveController : MonoBehaviour
     void ManuallySlice(Vector3 tpPos)
     {
         var randomRotation = Quaternion.Euler(Random.Range(54, 120), 0, 0);
-        var manSlicerStartPos = tpPos + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(0.8f, 2.2f), 0);
+        var manSlicerStartPos = tpPos + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(1.5f, 2.8f), 0);
         GameObject manSlicer = Instantiate(manualSlicer, manSlicerStartPos + new Vector3(0, 0, 1), randomRotation);
         manSlicer.transform.DOMoveZ(manSlicerStartPos.z - 3, 0.2f).OnComplete(() => Destroy(manSlicer));
     }
@@ -151,6 +155,8 @@ public class AttackMoveController : MonoBehaviour
         transform.DORotate(new Vector3(0, -180, 0), 1f);
         StartCoroutine(FixSword());
         cameraController.ShakeCam();
+        isThrowing = false;
+        //careful with these, they stop the script form running
         enemyToKill.GetComponentInChildren<TargetScript>().DeleteEnemy();
         enemyToKill.GetComponent<Animator>().SetInteger("state", 5);
     }
@@ -210,7 +216,7 @@ public class AttackMoveController : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         sword.parent = null;
         float throwTime = endingBonus.targetIndex * 1.5f;
-        sword.DOMove(myBonusTarget.position, Mathf.Sqrt(throwTime)).SetEase(Ease.Linear).OnComplete(() => BonusComplete());
+        sword.DOMove(myBonusTarget.position, Mathf.Log(throwTime)).SetEase(Ease.Linear).OnComplete(() => BonusComplete());
         sword.DOLookAt(myBonusTarget.position, .2f, AxisConstraint.None);
         bonusSlicer.transform.DORotate(new Vector3(0,360,0), 1f).SetLoops(-1, LoopType.Incremental);
     }

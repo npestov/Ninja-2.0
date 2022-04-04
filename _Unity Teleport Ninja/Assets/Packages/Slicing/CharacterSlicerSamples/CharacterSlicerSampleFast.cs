@@ -263,7 +263,10 @@ namespace BzKovSoft.CharacterSlicerSamples
 				rigid.isKinematic = false;
 				rigid.velocity = UnityEngine.Random.onUnitSphere * 4.5f;
 			}
-			Destroy(go, 2);
+			if (transform.tag != "bonus")
+				Destroy(go, 2);
+			else
+				Destroy(go, 5);
 		}
 
 

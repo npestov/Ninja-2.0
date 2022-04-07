@@ -14,6 +14,8 @@ public class CameraController : MonoBehaviour
     private CinemachineVirtualCamera menuCamera;
     [SerializeField]
     private CinemachineVirtualCamera swordCam;
+    [SerializeField]
+    private CinemachineVirtualCamera swordFollowWarp;
 
     private CinemachineImpulseSource impulse;
     private CinemachineImpulseSource impulseWalk;
@@ -35,6 +37,7 @@ public class CameraController : MonoBehaviour
     {
         walkingCamera.Priority = 1;
         aimingCamera.Priority = 0;
+        //swordFollowWarp.Priority = -2;
     }
     public void SwitchToAim()
     {
@@ -54,6 +57,11 @@ public class CameraController : MonoBehaviour
     public void SwitchToSwordCam()
     {
         swordCam.Priority = 2;
+    }
+
+    public void SwitchToFollowWarpCam()
+    {
+        swordFollowWarp.Priority = 3;
     }
 
     public void DisableMenuCam()

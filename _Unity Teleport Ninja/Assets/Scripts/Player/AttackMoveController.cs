@@ -48,6 +48,9 @@ public class AttackMoveController : MonoBehaviour
     }
     void Start()
     {
+        //CRE adding sharpness
+        PlayerPrefs.SetFloat("sharpness", 20);
+
         swordOrigRot = sword.localEulerAngles;
         swordOrigPos = sword.localPosition;
         swordMesh.enabled = true;
@@ -110,16 +113,18 @@ public class AttackMoveController : MonoBehaviour
         GameManager.Instance.dontRagdoll = true;
         //rotate towards starget
         transform.DOLookAt(new Vector3(enemyToKill.transform.position.x, transform.position.y, enemyToKill.transform.position.z), 0.2f);
-
+        
         Vector3 swordTpPos = enemyToKill.transform.position + swordShootOffset;
         // + new Vector3(Random.Range(-0.02f, 0.02f), 1.5f);
 
         float distanceToEnemy = Vector3.Distance(transform.position, enemyToKill.transform.position);
+
         warpDuration = Mathf.Sqrt(distanceToEnemy) / 25;
 
         sword.parent = null;
         sword.DOMove(swordTpPos, warpDuration / 1.2f);
         sword.DOLookAt(swordTpPos, .2f, AxisConstraint.None);
+
         ManuallySlice(swordTpPos);
 
         Vector3 tpPos = enemyToKill.transform.position + new Vector3(0, Y_OFFSET, 5);

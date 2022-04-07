@@ -13433,6 +13433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAttackQueued: 0
+  isThrowing: 0
   enemyToKill: {fileID: 0}
   warpDuration: 0.25
   sword: {fileID: 1951070827487099250}
@@ -13467,8 +13468,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcb5407ed3e7847ac944a04dd3ef573f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeed: 6
-  sideSpeed: 0.2
+  playerSpeed: 4
+  sideSpeed: 0.25
 --- !u!114 &1951070828789538420
 MonoBehaviour:
   m_ObjectHideFlags: 0

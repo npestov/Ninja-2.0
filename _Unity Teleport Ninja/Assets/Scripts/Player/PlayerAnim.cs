@@ -54,6 +54,27 @@ public class PlayerAnim : MonoBehaviour
         else
             Idle();
     }
+    public void RegularJump()
+    {
+        Debug.Log("jumpanim");
+        anim.SetTrigger("jump");
+    }
+    public void WallRun(bool isLeft)
+    {
+        Debug.Log("wallrun");
+        if (isLeft)
+        {
+            anim.SetTrigger("leftWallRun");
+        }
+        else
+        {
+            anim.SetTrigger("rightWallRun");
+        }
+    }
+    public void UpWallRun()
+    {
+        anim.SetTrigger("upwall");
+    }
 
     public void StrikeToHalf()
     {
@@ -73,5 +94,10 @@ public class PlayerAnim : MonoBehaviour
     {
         anim.ResetTrigger("run");
         anim.ResetTrigger("falling");
+    }
+
+    public void Turn(float turnAmmount)
+    {
+        anim.SetFloat("Turn", turnAmmount);
     }
 }

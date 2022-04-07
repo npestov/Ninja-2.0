@@ -18,6 +18,10 @@ TagManager:
   - nobonus
   - Runner
   - bonusWarning
+  - runupwall
+  - jumpbooster
+  - leftwall
+  - rightwall
   layers:
   - Default
   - TransparentFX

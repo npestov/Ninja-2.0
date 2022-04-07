@@ -138,6 +138,7 @@ public class GameManager : MonoBehaviour
                     playerAnim.Run();
                     levelStarted = true;
                     State = GameState.Walking;
+                    playerMovement.runningState = RunningState.RUNNING;
                 }
             }
         }

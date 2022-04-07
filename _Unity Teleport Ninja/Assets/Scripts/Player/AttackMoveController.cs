@@ -127,7 +127,7 @@ public class AttackMoveController : MonoBehaviour
 
         ManuallySlice(swordTpPos);
 
-        Vector3 tpPos = enemyToKill.transform.position + new Vector3(0, Y_OFFSET, 5);
+        Vector3 tpPos = enemyToKill.transform.position + new Vector3(0, Y_OFFSET, 7);
 
         
 

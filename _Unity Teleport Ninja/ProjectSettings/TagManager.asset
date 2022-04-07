@@ -22,6 +22,10 @@ TagManager:
   - jumpbooster
   - leftwall
   - rightwall
+  - wall
+  - slide
+  - slideend
+  - vault
   layers:
   - Default
   - TransparentFX

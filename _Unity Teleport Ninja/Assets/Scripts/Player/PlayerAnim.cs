@@ -76,6 +76,16 @@ public class PlayerAnim : MonoBehaviour
         anim.SetTrigger("upwall");
     }
 
+    public void Vault()
+    {
+        anim.SetTrigger("vault");
+    }
+
+    public void Slide()
+    {
+        anim.SetTrigger("slide");
+    }
+
     public void StrikeToHalf()
     {
         anim.SetTrigger("strike");

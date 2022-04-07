@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float timer;
     private float jumpDelay = 0.5f;
+    float originalMass;
 
     //Side to side
     [SerializeField]
@@ -44,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-
+        originalMass = rb.mass;
     }
 
     // Update is called once per frame
@@ -59,9 +60,11 @@ public class PlayerMovement : MonoBehaviour
         anim.Turn(turnIndex);
 
         if (Input.GetMouseButtonDown(0))
-        {
             lastClickPos = Input.mousePosition;
-        }
+
+        if (runningState == RunningState.UP_WALL_RUNNING)
+            transform.position += new Vector3(0, runningUpWallSpeed * Time.deltaTime, 0);
+    
 
         timer -= Time.deltaTime;
     }
@@ -82,12 +85,21 @@ public class PlayerMovement : MonoBehaviour
                 anim.WallRun(false);
                 break;
             case RunningState.UP_WALL_RUNNING:
+                if (runningState == RunningState.UP_WALL_RUNNING) return;
+
                 anim.UpWallRun();
                 rb.useGravity = false;
                 break;
             case RunningState.JUMPING:
+                StartCoroutine(IncreaseGravity());
                 anim.RegularJump();
                 rb.useGravity = true;
+                break;
+            case RunningState.SLIDE:
+                anim.Slide();
+                break;
+            case RunningState.FLIP:
+                anim.Vault();
                 break;
         }
         runningState = state;
@@ -126,6 +138,7 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("runupwall"))
         {
             UpdateRunnerState(RunningState.UP_WALL_RUNNING);
+            rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
         }
 
     }
@@ -135,10 +148,6 @@ public class PlayerMovement : MonoBehaviour
         if (GameManager.Instance.State != GameState.Walking)
             return;
 
-        if (collision.gameObject.CompareTag("runupwall"))
-        {
-            transform.position += new Vector3(0, runningUpWallSpeed * Time.deltaTime, 0);
-        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -158,7 +167,8 @@ public class PlayerMovement : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("runupwall"))
         {
-            UpdateRunnerState(RunningState.JUMPING);
+            collision.gameObject.tag = "Untagged";
+            UpdateRunnerState(RunningState.FLIP);
             rb.useGravity = true;
         }
 
@@ -184,8 +194,20 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("jumpbooster"))
         {
             Jump(jumpBoosterForce);
-
         }
+        if (collision.gameObject.CompareTag("slide"))
+        {
+            UpdateRunnerState(RunningState.SLIDE);
+        }
+        if (collision.gameObject.CompareTag("slideend"))
+        {
+            UpdateRunnerState(RunningState.RUNNING);
+        }
+        if (collision.gameObject.CompareTag("vault"))
+        {
+            UpdateRunnerState(RunningState.FLIP);
+        }
+
     }
 
     public void IncreaseSpeed()
@@ -247,6 +269,17 @@ public class PlayerMovement : MonoBehaviour
         //SIDE TO SIDE END
 
     }
+
+    private IEnumerator IncreaseGravity()
+    {
+        yield return new WaitForSeconds(1);
+        while (runningState == RunningState.JUMPING)
+        {
+            yield return new WaitForSeconds(0.1f);
+            rb.mass += 0.2f;
+        }
+        rb.mass = originalMass;
+    }
 }
 
 public enum RunningState
@@ -256,5 +289,7 @@ public enum RunningState
     LEFT_WALL_RUNNING,
     RIGHT_WALL_RUNNING,
     UP_WALL_RUNNING,
-    JUMPING
+    JUMPING,
+    FLIP,
+    SLIDE
 }
